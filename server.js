@@ -30,20 +30,33 @@ app.get("/", (req, res) => {
 app.get("/word/:word", async (req, res) => {
   const word = req.params.word;
   const queryResult = {};
-  const query = await connection.query(
-    `select * from Employee`,
+  connection.query(
+    `select w.word as "synonym", w.defenition as "defenition",t.word_type as "type" from WORD
+    join WORD_type on WORD.word_type = WORD_type.type_ID
+    join synonyms s on WORD.word_ID = s.W_ID
+    join WORD w on s.Syn_ID = w.word_ID
+    join WORD_type t on w.word_type = t.type_ID
+    where WORD.word = "${word}";`,
     (error, results) => {
-      if (error) res.send("error first query");
+      if (error) res.sendStatus(500);
       else {
-        queryResult.synonyme = results;
+        queryResult.synonyms = results;
 
-        connection.query(`select * from Department`, (error, results) => {
-          if (error) res.send("error second query");
-          else {
-            queryResult.Phonetics = results;
-            res.send(queryResult);
+        connection.query(
+          `select w.word as "homophone", w.defenition as "defenition", t.word_type as "type" from WORD
+          join WORD_type on WORD.word_type = WORD_type.type_ID
+          join phonesthetics p on WORD.word_ID = p.W1_ID
+          join WORD w on p.W2_ID = w.word_ID
+          join WORD_type t on w.word_type = t.type_ID
+          where WORD.word = "${word}";`,
+          (error, results) => {
+            if (error) res.sendStatus(500);
+            else {
+              queryResult.homophones = results;
+              res.send(queryResult);
+            }
           }
-        });
+        );
       }
     }
   );
