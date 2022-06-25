@@ -25,12 +25,13 @@ search.onclick = () => {
 async function query(word) {
   const query = await fetch(`/word/${word}`);
   const synonemTable = document.getElementById("synonym_table");
-  synonemTable.innerHTML = `<thead>
-  <th>#</th>
-  <th>synonyme</th>
-  <th>difintion</th>
-  <th>type</th>
-</thead>`;
+  synonemTable.innerHTML = `
+  <thead>
+        <th>#</th>
+        <th>synonyme</th>
+        <th>definition</th>
+        <th>type</th>
+      </thead>`;
 
   const homophoneTable = document.getElementById("homophone_table");
   homophoneTable.innerHTML = `<thead>

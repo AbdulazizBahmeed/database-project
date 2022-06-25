@@ -3,7 +3,6 @@ const app = express();
 const path = require("path");
 const mysql = require("mysql");
 var Connection = require("mysql/lib/Connection");
-const { query } = require("express");
 const db_config = {
   host: "bdwyaxuoiy38wddwtdxs-mysql.services.clever-cloud.com",
   database: "bdwyaxuoiy38wddwtdxs",
@@ -38,7 +37,7 @@ app.get("/word/:word", async (req, res) => {
     join WORD_type t on w.word_type = t.type_ID
     where WORD.word = "${word}";`,
     (error, results) => {
-      if (error) res.sendStatus(500);
+      if (error) res.sendStatus(501);
       else {
         queryResult.synonyms = results;
 
