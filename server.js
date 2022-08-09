@@ -22,6 +22,10 @@ app.listen(port, () => {
 //middlewares
 app.use(express.static("public"));
 
+app.get("/a", (req,res)=>{
+  res.send(req.ip);
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/PhoneticsScience.html"));
 });
